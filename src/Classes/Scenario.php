@@ -19,7 +19,7 @@ class Scenario
     private $line;
     private $tags;
     private $loopCount;
-    private $screenshotName;
+    private $screenShotName;
 
     /**
      * @var bool
@@ -35,7 +35,9 @@ class Scenario
      * @var Step[]
      */
     private $steps;
-    private $screenshotPath;
+
+    private $screenShotPath;
+    private $outputPath;
 
     /**
      * @return mixed
@@ -53,14 +55,14 @@ class Scenario
         $this->name = $name;
     }
 
-    public function getScreenshotName()
+    public function getScreenShotName()
     {
-        return $this->screenshotName;
+        return $this->screenShotName;
     }
 
-    public function setScreenshotName($scenarioName)
+    public function setScreenShotName($scenarioName)
     {
-        $this->screenshotName = preg_replace('/\W/', '', $scenarioName) . '.png';
+        $this->screenShotName = preg_replace('/\W/', '', $scenarioName) . '.png';
     }
 
     /**
@@ -191,16 +193,16 @@ class Scenario
     /**
      * @return mixed
      */
-    public function getScreenshotPath()
+    public function getScreenShotPath()
     {
-        if (file_exists($this->getOutputPath() . $this->screenshotPath)) {
-            return $this->screenshotPath;
+        if (file_exists($this->getOutputPath() . $this->screenShotPath)) {
+            return $this->screenShotPath;
         }
     }
 
-    public function setScreenshotPath($string)
+    public function setScreenShotPath($string)
     {
-        $this->screenshotPath = $string;
+        $this->screenShotPath = $string;
     }
 
     /**

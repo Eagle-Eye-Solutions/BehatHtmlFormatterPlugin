@@ -182,6 +182,14 @@ class BehatHTMLFormatter implements Formatter {
         $this->printer = new FileOutputPrinter($this->renderer->getNameList(), $filename, $base_path);
         $this->timer = new Timer();
         $this->memory = new Memory();
+        $this->tmpPath = $this->base_path . '/data/tmp/';
+
+        $files = glob($this->tmpPath.'*'); // get all file names present in folder
+        foreach ($files as $file) { // iterate files
+            if (is_file($file)) {
+                unlink($file);
+            } // delete the file
+        }
     }
 
     /**
@@ -436,7 +444,7 @@ class BehatHTMLFormatter implements Formatter {
         $feature->setDescription($event->getFeature()->getDescription());
         $feature->setTags($event->getFeature()->getTags());
         $feature->setFile($event->getFeature()->getFile());
-        $feature->setScreenshotFolder($event->getFeature()->getTitle());
+        $feature->setScreenShotFolder($event->getFeature()->getTitle());
         $this->currentFeature = $feature;
 
         $print = $this->renderer->renderBeforeFeature($this);
@@ -468,10 +476,12 @@ class BehatHTMLFormatter implements Formatter {
         $scenario->setName($event->getScenario()->getTitle());
         $scenario->setTags($event->getScenario()->getTags());
         $scenario->setLine($event->getScenario()->getLine());
-        $scenario->setScreenshotName($event->getScenario()->getTitle());
-        $scenario->setScreenshotPath(
+        $scenario->setScreenShotName($event->getScenario()->getTitle());
+        $scenario->setOutputPath($this->getOutputPath());
+        $scenario->setScreenShotPath(
+            $this->getBasePath() . '/' .
             'assets/screenshots/' .
-            preg_replace('/\W/', '', $event->getFeature()->getTitle()) . '/'.
+            preg_replace('/\W/', '', $event->getFeature()->getTitle()) . '/' .
             preg_replace('/\W/', '', $event->getScenario()->getTitle()) . '.png'
         );
         $this->currentScenario = $scenario;
@@ -604,6 +614,17 @@ class BehatHTMLFormatter implements Formatter {
                         } else {
                             $step->setException($exception->getMessage());
                             $this->failedSteps[] = $step;
+
+                            $line = $event->getStep()->getText();
+                            $scenarioName = $event->getFeature()->getTitle();
+                            $fileName = md5(
+                                    preg_replace(
+                                        '/\W/',
+                                        '',
+                                        $scenarioName . $line . date('YmdHi'))
+                                ) . '.png';
+
+                            $step->setScreenShotImage($this->tmpPath . '/' . $fileName);
                         }
                     } else {
                         $step->setOutput($result->getCallResult()->getStdOut());

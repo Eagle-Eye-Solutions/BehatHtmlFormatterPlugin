@@ -164,6 +164,11 @@ class BehatHTMLFormatter implements Formatter {
      */
     private $skippedSteps;
 
+    /**
+     * @var string
+     */
+    private $tmpPath;
+
     //</editor-fold>
 
     //<editor-fold desc="Formatter functions">

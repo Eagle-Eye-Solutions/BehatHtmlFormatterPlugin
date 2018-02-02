@@ -22,6 +22,8 @@ class Step
     private $output;
     private $definition;
     private $argumentType;
+    private $screenshotPath;
+    private $screenShotImage;
 
     /**
      * @return mixed
@@ -62,7 +64,7 @@ class Step
     {
         return $this->argumentType;
     }
-    
+
     /**
      * @param mixed $arguments
      */
@@ -70,7 +72,7 @@ class Step
     {
         $this->argumentType = $argumentType;
     }
-    
+
     /**
      * @return mixed
      */
@@ -182,36 +184,72 @@ class Step
     {
         $this->resultCode = $resultCode;
     }
-    
-     /**
+
+    /**
      * @return bool
      */
     public function isPassed()
     {
         return $this->resultCode == StepResult::PASSED;
     }
-    
-     /**
+
+    /**
      * @return bool
      */
     public function isSkipped()
     {
         return $this->resultCode == StepResult::SKIPPED;
     }
-    
-     /**
+
+    /**
      * @return bool
      */
     public function isPending()
     {
         return ($this->resultCode == StepResult::PENDING || $this->resultCode == StepResult::UNDEFINED);
     }
-    
-     /**
+
+    /**
      * @return bool
      */
     public function isFailed()
     {
         return $this->resultCode == StepResult::FAILED;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getScreenshotPath()
+    {
+        if (file_exists($this->screenshotPath)) {
+            return $this->screenshotPath;
+        }
+    }
+
+    /**
+     * @param $string
+     */
+    public function setScreenshotPath($string)
+    {
+        $this->screenshotPath = $string;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScreenShotImage()
+    {
+        if (file_exists($this->screenShotImage)) {
+            return base64_encode(file_get_contents($this->screenShotImage));
+        }
+    }
+
+    /**
+     * @param $screenShotImage
+     */
+    public function setScreenShotImage($screenShotImage)
+    {
+        $this->screenShotImage = $screenShotImage;
     }
 }

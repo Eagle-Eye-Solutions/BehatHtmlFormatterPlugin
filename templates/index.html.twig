@@ -24,6 +24,35 @@
     <![endif]-->
 
     <script src="assets/Twig/js/Chart.min.js"></script>
+    <style>
+        .thumbnail span{ /*CSS for enlarged image*/
+            position: absolute;
+            background-color: lightyellow;
+            padding: 5px;
+            left: -1000px;
+            border: 1px dashed gray;
+            visibility: hidden;
+            color: black;
+            text-decoration: none;
+        }
+        .thumbnail span img{ /*CSS for enlarged image*/
+            border-width: 0;
+            padding: 2px;
+            display: block;
+            max-width: 60%;
+            max-height: 60%;
+            width: auto;
+            height: auto;
+        }
+
+        .thumbnail:hover span{ /*CSS for enlarged image*/
+            visibility: visible;
+            top: 80px;
+            left: -200px; /*position where enlarged image should offset horizontally */
+            z-index: 50;
+        }
+
+    </style>
 </head>
 <body role="document" style="margin-top: 70px;">
 
@@ -198,17 +227,32 @@
                                                         <p style="padding-left:0.5em; overflow-x:scroll; white-space:nowrap; font-family:monospace">{{ argument | nl2br }}</p>
                                                     {% endfor %}
                                                 {% endif %}
-                                                {% if step.exception is not null %}
-                                                    <br>
-                                                    <p style="padding-left:2em ; color:gray">({{ step.exception }})</p>
-                                                {% endif %}
-                                                {% if step.output is not null %}
-                                                    <br>
-                                                    <p style="padding-left:2em ; color:black">| {{ step.output }}</p>
-                                                {% endif %}
-                                                {% if printLoopBreak is not null and ( loop.index % scenario.getLoopSize ) == 0 and loop.last != true  %}
-                                                    </li><li class="list-group-item break">
-                                                {% endif %}
+                                            {% if step.exception is not null %}
+                                                <br>
+                                                <p style="padding-left:2em ; color:gray">({{ step.exception }})</p>
+                                            {% endif %}
+                                            {% if step.output is not null %}
+                                                <br>
+                                                <p style="padding-left:2em ; color:black">| {{ step.output }}</p>
+                                            {% endif %}
+                                            {% if step.getScreenshotPath() %}
+                                                <a class="label label-default"
+                                                   href="{{ step.getScreenshotPath() }}" target="_blank">Screenshot</a>
+                                            {% endif %}
+                                            {% if step.getScreenShotImage() %}
+                                                <a class="thumbnail" href="#thumb">
+                                                    Screen Shot
+                                                    <span>
+                                                        <img alt="Screen Shot"
+                                                        src="data:image/png;base64,{{ step.getScreenShotImage() }}"/>
+                                                    </span>
+                                                </a>
+                                            {% endif %}
+                                            {% if printLoopBreak is not null and ( loop.index % scenario.getLoopSize ) == 0 and loop.last != true %}
+                                                </li>
+
+                                                <li class="list-group-item break">
+                                            {% endif %}
                                             </li>
                                             {#<div class="bs-callout bs-callout-{% if step.passed %}success{% else %}danger{% endif %}" id="callout-collapse-accessibility">#}
                                             {#<b>{{ step.keyword }}</b> {{ step.text }}#}
@@ -341,5 +385,6 @@
         });
     });
 </script>
+
 </body>
 </html>

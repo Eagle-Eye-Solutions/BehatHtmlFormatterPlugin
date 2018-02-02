@@ -185,7 +185,17 @@ class Scenario
     public function getLoopSize()
     {
         //behat
-        return $this->loopCount > 0 ? sizeof($this->steps)/$this->loopCount : sizeof($this->steps);
+        return $this->loopCount > 0 ? sizeof($this->steps) / $this->loopCount : sizeof($this->steps);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getScreenshotPath()
+    {
+        if (file_exists($this->getOutputPath() . $this->screenshotPath)) {
+            return $this->screenshotPath;
+        }
     }
 
     public function setScreenshotPath($string)
@@ -194,12 +204,22 @@ class Scenario
     }
 
     /**
-     * @return mixed
+     * Returns output path.
+     *
+     * @return null|string
      */
-    public function getScreenshotPath()
+    public function getOutputPath()
     {
-        if (file_exists('results/html/' . $this->screenshotPath)) {
-            return $this->screenshotPath;
-        }
+        return $this->outputPath;
+    }
+
+    /**
+     * Sets output path.
+     *
+     * @param string $path
+     */
+    public function setOutputPath($path)
+    {
+        $this->outputPath = $path;
     }
 }

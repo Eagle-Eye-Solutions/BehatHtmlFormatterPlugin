@@ -72,7 +72,7 @@ class FileOutputPrinter implements PrinterInterface
     /**
      * Writes  message(s) at start of the output console.
      *
-     * @param string|array $messages message or array of messages
+     * @param array $messages message or array of messages
      */
     public function writeBeginning($messages = [])
     {
@@ -138,9 +138,7 @@ class FileOutputPrinter implements PrinterInterface
     }
 
     /**
-     * Returns output styles.
      *
-     * @return array
      */
     public function getOutputStyles()
     {
@@ -178,9 +176,7 @@ class FileOutputPrinter implements PrinterInterface
     }
 
     /**
-     * Returns output verbosity level.
      *
-     * @return integer
      */
     public function getOutputVerbosity()
     {
@@ -190,7 +186,7 @@ class FileOutputPrinter implements PrinterInterface
     /**
      * Writes message(s) to output console.
      *
-     * @param string|array $messages message or array of messages
+     * @param array $messages message or array of messages
      */
     public function write($messages = [])
     {
@@ -206,7 +202,7 @@ class FileOutputPrinter implements PrinterInterface
     /**
      * Writes newlined message(s) to output console.
      *
-     * @param string|array $messages message or array of messages
+     * @param array $messages message or array of messages
      */
     public function writeln($messages = [])
     {
@@ -216,21 +212,6 @@ class FileOutputPrinter implements PrinterInterface
             file_put_contents($file, $message, FILE_APPEND);
         }
     }
-
-  /**
-   * Writes  message(s) at start of the output console.
-   *
-   * @param string|array $messages message or array of messages
-   */
-  public function writeBeginning($messages = array()) {
-
-    //Write it for each message = each renderer
-    foreach ($messages as $key => $message) {
-      $file = $this->outputPath . DIRECTORY_SEPARATOR . $this->rendererFiles[$key] . '.html';
-      $fileContents = file_get_contents($file);
-      file_put_contents($file, $message . $fileContents);
-    }
-  }
 
     /**
      * Copies the assets folder to the report destination.

@@ -120,45 +120,47 @@ Below is an example of FeatureContext methods which will produce an image file i
 
 ```php
 
-        /**
-         * @BeforeScenario
-         *
-         * @param BeforeScenarioScope $scope
-         *
-         */
-        public function setUpTestEnvironment($scope)
-        {
-            $this->currentScenario = $scope->getScenario();
-        }
+     /**
+     * @BeforeScenario
+     *
+     * @param BeforeScenarioScope $scope
+     *
+     */
+     public function setUpTestEnvironment($scope)
+     {
+        $this->currentScenario = $scope->getScenario();
+     }
 
-        /**
-         * @AfterStep
-         *
-         * @param AfterStepScope $scope
-         */
-        public function afterStep($scope)
-        {
-            //if test has failed, and is not an api test, get screenshot
-            if(!$scope->getTestResult()->isPassed())
-            {
-                //create filename string
+The following is different to the project this was forked from 
 
-               $featureFolder = preg_replace('/\W/', '', $scope->getFeature()->getTitle());
-                  
-                              $scenarioName = $this->currentScenario->getTitle();
-                              $fileName = preg_replace('/\W/', '', $scenarioName) . '.png';
+     /**
+     * @AfterStep
+     *
+     * @param AfterStepScope $scope
+     */
+    public function afterStep(AfterStepScope $scope)
+    {
+        if (TestResult::FAILED === $scope->getTestResult()->getResultCode()) {
+            $counter = $scope->getStep()->getText();
 
-                //create screenshots directory if it doesn't exist
-                if (!file_exists('results/html/assets/screenshots/' . $featureFolder)) {
-                    mkdir('results/html/assets/screenshots/' . $featureFolder);
-                }
+            $scenarioName = $scope->getFeature()->getTitle();
+            $fileName = md5(
+                    preg_replace(
+                        '/\W/',
+                        '',
+                        $scenarioName . $counter . date('YmdHi'))
+                ) . '.png';
 
-                //take screenshot and save as the previously defined filename
-                $this->driver->takeScreenshot('results/html/assets/screenshots/' . $featureFolder . '/' . $fileName);
-                // For Selenium2 Driver you can use:
-                // file_put_contents('results/html/assets/screenshots/' . $featureFolder . '/' . $fileName, $this->getSession()->getDriver()->getScreenshot());
+            $root = __DIR__ . '/../../';
+
+            $path = $root . 'data/tmp';
+            if (!is_dir($path)) {
+                return;
             }
+
+            $this->saveScreenshot($fileName, $path);
         }
+    }
 
 ```
 

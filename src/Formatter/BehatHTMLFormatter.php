@@ -187,7 +187,13 @@ class BehatHTMLFormatter implements Formatter {
         $this->printer = new FileOutputPrinter($this->renderer->getNameList(), $filename, $base_path);
         $this->timer = new Timer();
         $this->memory = new Memory();
-        $this->tmpPath = $this->base_path . '/data/tmp/';
+
+        $findSeparator = '/';
+        if (DIRECTORY_SEPARATOR !== '/') {
+            $findSeparator = '\\';
+        }
+
+        $this->tmpPath = $this->base_path . str_replace($findSeparator, DIRECTORY_SEPARATOR, '/data/tmp/');
 
         $files = glob($this->tmpPath.'*'); // get all file names present in folder
         foreach ($files as $file) { // iterate files

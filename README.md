@@ -46,12 +46,14 @@ Add BehatHtmlFormatterPlugin to the list of dependencies inside your `composer.j
 {
     "require": {
         "behat/behat": "3.*@stable",
-        "emuse/behat-html-formatter": "0.1.*",
+        "emuse/behat-html-formatter": "dev-master as 0.1.99"
     },
-    "minimum-stability": "dev",
-    "config": {
-        "bin-dir": "bin/"
-    }
+    "repositories": [
+    	{
+    	    "type": "vcs",
+    		"url": "git@github.com:Eagle-Eye-Solutions/BehatHtmlFormatterPlugin.git"
+    	}
+    ]
 }
 ```
 
@@ -151,9 +153,17 @@ The following is different to the project this was forked from
                         $scenarioName . $counter . date('YmdHi'))
                 ) . '.png';
 
+            $findSeparator = '/';
+            if (DIRECTORY_SEPARATOR !== '/') {
+                $findSeparator = '\\';
+            }
+
+            /* change your root path here */
             $root = __DIR__ . '/../../';
 
             $path = $root . 'data/tmp';
+            
+            $path = str_replace($findSeperator, DIRECTORY_SEPARATOR,$path);
             if (!is_dir($path)) {
                 return;
             }

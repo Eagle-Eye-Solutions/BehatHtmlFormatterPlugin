@@ -39,17 +39,20 @@ class TwigRenderer
         $twig = new Twig_Environment($loader, array());
         $print = $twig->render('index.html.twig',
             array(
-                'suites' => $obj->getSuites(),
-                'failedScenarios' => $obj->getFailedScenarios(),
+                'suites'           => $obj->getSuites(),
+                'failedScenarios'  => $obj->getFailedScenarios(),
                 'pendingScenarios' => $obj->getPendingScenarios(),
-                'passedScenarios' => $obj->getPassedScenarios(),
-                'failedSteps' => $obj->getFailedSteps(),
-                'passedSteps' => $obj->getPassedSteps(),
-                'failedFeatures' => $obj->getFailedFeatures(),
-                'passedFeatures' => $obj->getPassedFeatures(),
-                'printStepArgs' => $obj->getPrintArguments(),
-                'printStepOuts' => $obj->getPrintOutputs(),
-                'printLoopBreak' => $obj->getPrintLoopBreak(),
+                'passedScenarios'  => $obj->getPassedScenarios(),
+                'failedSteps'      => $obj->getFailedSteps(),
+                'passedSteps'      => $obj->getPassedSteps(),
+                'failedFeatures'   => $obj->getFailedFeatures(),
+                'passedFeatures'   => $obj->getPassedFeatures(),
+                'printStepArgs'    => $obj->getPrintArguments(),
+                'printStepOuts'    => $obj->getPrintOutputs(),
+                'printLoopBreak'   => $obj->getPrintLoopBreak(),
+                'environment'      => $obj->getEnvironment(),
+                'dateStart'        => $obj->getDateStart(),
+                'dateEnd'          => $obj->getDateEnd(),
             )
         );
 

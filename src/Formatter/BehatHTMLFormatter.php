@@ -168,11 +168,17 @@ class BehatHTMLFormatter implements Formatter {
      * @var string
      */
     private $tmpPath;
-
+    /**
+     * @var array|false|string
+     */
     private $environment;
-
+    /**
+     * @var false|string
+     */
     private $dateStart;
-
+    /**
+     * @var string
+     */
     private $dateEnd;
 
     //</editor-fold>
@@ -194,7 +200,7 @@ class BehatHTMLFormatter implements Formatter {
         $this->timer = new Timer();
         $this->memory = new Memory();
 
-        $this->environment = getenv('APP_ENV');
+        $this->environment = (null !== getenv('APP_ENV')) ? getenv('APP_ENV') : 'not set';
         $this->dateStart = date('Y-m-d H:i:s');
 
         $findSeparator = '/';

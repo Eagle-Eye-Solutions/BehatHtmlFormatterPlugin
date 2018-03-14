@@ -169,6 +169,12 @@ class BehatHTMLFormatter implements Formatter {
      */
     private $tmpPath;
 
+    private $environment;
+
+    private $dateStart;
+
+    private $dateEnd;
+
     //</editor-fold>
 
     //<editor-fold desc="Formatter functions">
@@ -187,6 +193,9 @@ class BehatHTMLFormatter implements Formatter {
         $this->printer = new FileOutputPrinter($this->renderer->getNameList(), $filename, $base_path);
         $this->timer = new Timer();
         $this->memory = new Memory();
+
+        $this->environment = getenv('APP_ENV');
+        $this->dateStart = date('Y-m-d H:i:s');
 
         $findSeparator = '/';
         if (DIRECTORY_SEPARATOR !== '/') {
@@ -394,6 +403,55 @@ class BehatHTMLFormatter implements Formatter {
     {
         return $this->skippedSteps;
     }
+
+    /**
+     * @return array|false|string
+     */
+    public function getEnvironment()
+    {
+        return $this->environment;
+    }
+
+    /**
+     * @param array|false|string $environment
+     */
+    public function setEnvironment($environment)
+    {
+        $this->environment = $environment;
+    }
+
+    /**
+     * @return false|string
+     */
+    public function getDateStart()
+    {
+        return $this->dateStart;
+    }
+
+    /**
+     * @param false|string $dateStart
+     */
+    public function setDateStart($dateStart)
+    {
+        $this->dateStart = $dateStart;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateEnd()
+    {
+        return $this->dateEnd;
+    }
+
+    /**
+     * @param mixed $dateEnd
+     */
+    public function setDateEnd($dateEnd)
+    {
+        $this->dateEnd = $dateEnd;
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="Event functions">
@@ -476,6 +534,8 @@ class BehatHTMLFormatter implements Formatter {
 
         $print = $this->renderer->renderAfterFeature($this);
         $this->printer->writeln($print);
+
+        $this->setDateEnd(date('Y-m-d H:i:s'));
     }
 
     /**

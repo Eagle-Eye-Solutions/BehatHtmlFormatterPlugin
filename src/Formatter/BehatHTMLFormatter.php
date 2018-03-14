@@ -200,7 +200,7 @@ class BehatHTMLFormatter implements Formatter {
         $this->timer = new Timer();
         $this->memory = new Memory();
 
-        $this->environment = (null !== getenv('APP_ENV')) ? getenv('APP_ENV') : 'not set';
+        $this->environment = getenv('APP_ENV');
         $this->dateStart = date('Y-m-d H:i:s');
 
         $findSeparator = '/';
